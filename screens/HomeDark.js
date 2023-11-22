@@ -1,24 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View, Switch } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import WeatherContainer from "../components/WeatherContainer";
+import { ref, set, update } from "firebase/database";
+import { db } from "../firebaseConfig";
 const HomeDark = () => {
-  const [buttonsSwitchValueState, setButtonsSwitchValueState] = useState(true);
-  const [buttons1SwitchValueState, setButtons1SwitchValueState] =
-    useState(true);
-  const [buttons2SwitchValueState, setButtons2SwitchValueState] =
-    useState(true);
-  const [buttons3SwitchValueState, setButtons3SwitchValueState] =
-    useState(false);
-  const [buttons4SwitchValueState, setButtons4SwitchValueState] =
-    useState(true);
-  const [buttons5SwitchValueState, setButtons5SwitchValueState] =
-    useState(true);
-  const [buttons6SwitchValueState, setButtons6SwitchValueState] =
-    useState(true);
-  const [buttons7SwitchValueState, setButtons7SwitchValueState] =
-    useState(true);
+  const [buttons0SwitchValueState, setButtons0SwitchValueState] = useState(false);
+  const [buttons1SwitchValueState, setButtons1SwitchValueState] = useState(false);
+  const [buttons2SwitchValueState, setButtons2SwitchValueState] = useState(false);
+  const [buttons3SwitchValueState, setButtons3SwitchValueState] = useState(false);
+  const [buttons4SwitchValueState, setButtons4SwitchValueState] = useState(false);
+  const [buttons5SwitchValueState, setButtons5SwitchValueState] = useState(false);
+  const [buttons6SwitchValueState, setButtons6SwitchValueState] = useState(false);
+  const [buttons7SwitchValueState, setButtons7SwitchValueState] = useState(false);
+/*
+  useEffect(() => {
+    const switchRef = firebase.database().ref('switches');
+
+    switchRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setButtons0SwitchValueState(data.switch0);
+        setButtons1SwitchValueState(data.switch1);
+        setButtons2SwitchValueState(data.switch2);
+        setButtons3SwitchValueState(data.switch3);
+        setButtons4SwitchValueState(data.switch4);
+        setButtons5SwitchValueState(data.switch5);
+        setButtons6SwitchValueState(data.switch6);
+        setButtons7SwitchValueState(data.switch7);
+      }
+    });
+    return () => {
+      switchRef.off('value');
+    };
+  },[]);
+*/
+  const handleSwitch0Change = (newValue) => {
+    //firebase.database().ref('switches').update({switch0:newValue});
+    update(ref(db, 'Switches/'), {
+      Switch0: newValue,
+    });
+    setButtons0SwitchValueState(newValue);
+  }
+
+  const handleSwitch1Change = (newValue) => {
+    //firebase.database().ref('switches').update({switch1:newValue});
+    update(ref(db, 'Switches/'), {
+      Switch1: newValue,
+    });
+    setButtons1SwitchValueState(newValue);
+  }
+  const handleSwitch2Change = (newValue) => {
+    //firebase.database().ref('switches').update({switch2:newValue});
+    update(ref(db, 'Switches/'), {
+      Switch2: newValue,
+    });
+    setButtons2SwitchValueState(newValue);
+  }
+  const handleSwitch3Change = (newValue) => {
+    //firebase.database().ref('switches').update({switch3:newValue});
+    update(ref(db, 'Switches/'), {
+      Switch3: newValue,
+    });
+    setButtons3SwitchValueState(newValue);
+  }
+  const handleSwitch4Change = (newValue) => {
+    //firebase.database().ref('switches').update({switch4:newValue});
+    update(ref(db, 'Switches/'), {
+      Switch4: newValue,
+    });
+    setButtons4SwitchValueState(newValue);
+  }
+  const handleSwitch5Change = (newValue) => {
+    //firebase.database().ref('switches').update({switch5:newValue});
+    update(ref(db, 'Switches/'), {
+      Switch5: newValue,
+    });
+    setButtons5SwitchValueState(newValue);
+  }
+  const handleSwitch6Change = (newValue) => {
+    //firebase.database().ref('switches').update({switch6:newValue});
+    update(ref(db, 'Switches/'), {
+      Switch6: newValue,
+    });
+    setButtons6SwitchValueState(newValue);
+  }
+  const handleSwitch7Change = (newValue) => {
+    //firebase.database().ref('switches').update({switch7:newValue});
+    update(ref(db, 'Switches/'), {
+      Switch7: newValue,
+    });
+    setButtons7SwitchValueState(newValue);
+  }
+
 
   return (
     <View style={styles.homeDark}>
@@ -37,8 +112,8 @@ const HomeDark = () => {
         </View>
           <Switch
               style={styles.buttons}
-              value={buttonsSwitchValueState}
-              onValueChange={setButtonsSwitchValueState}
+              value={buttons0SwitchValueState}
+              onValueChange={handleSwitch0Change}
               thumbColor="#fff"
               trackColor={{ false: "#939393", true: "#8132E6" }}
           />
@@ -55,7 +130,7 @@ const HomeDark = () => {
         <Switch
           style={styles.buttons}
           value={buttons1SwitchValueState}
-          onValueChange={setButtons1SwitchValueState}
+          onValueChange={handleSwitch1Change}
           thumbColor="#fff"
           trackColor={{ false: "#939393", true: "#8132E6" }}
         />
@@ -72,7 +147,7 @@ const HomeDark = () => {
         <Switch
           style={styles.buttons}
           value={buttons2SwitchValueState}
-          onValueChange={setButtons2SwitchValueState}
+          onValueChange={handleSwitch2Change}
           thumbColor="#fff"
           trackColor={{ false: "#939393", true: "#8132E6" }}
         />
@@ -89,7 +164,7 @@ const HomeDark = () => {
         <Switch
           style={styles.buttons}
           value={buttons3SwitchValueState}
-          onValueChange={setButtons3SwitchValueState}
+          onValueChange={handleSwitch3Change}
           thumbColor="#fff"
           trackColor={{ false: "#939393", true: "#8132E6" }}
         />
@@ -106,7 +181,7 @@ const HomeDark = () => {
         <Switch
           style={styles.buttons}
           value={buttons4SwitchValueState}
-          onValueChange={setButtons4SwitchValueState}
+          onValueChange={handleSwitch4Change}
           thumbColor="#fff"
           trackColor={{ false: "#939393", true: "#8132E6" }}
         />
@@ -123,7 +198,7 @@ const HomeDark = () => {
         <Switch
           style={styles.buttons}
           value={buttons5SwitchValueState}
-          onValueChange={setButtons5SwitchValueState}
+          onValueChange={handleSwitch5Change}
           thumbColor="#fff"
           trackColor={{ false: "#939393", true: "#8132E6" }}
         />
@@ -140,7 +215,7 @@ const HomeDark = () => {
         <Switch
           style={styles.buttons}
           value={buttons6SwitchValueState}
-          onValueChange={setButtons6SwitchValueState}
+          onValueChange={handleSwitch6Change}
           thumbColor="#fff"
           trackColor={{ false: "#939393", true: "#8132E6" }}
         />
@@ -157,7 +232,7 @@ const HomeDark = () => {
         <Switch
           style={styles.buttons}
           value={buttons7SwitchValueState}
-          onValueChange={setButtons7SwitchValueState}
+          onValueChange={handleSwitch7Change}
           thumbColor="#fff"
           trackColor={{ false: "#939393", true: "#8132E6" }}
         />
