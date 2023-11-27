@@ -1,9 +1,61 @@
-import {View,Text, StyleSheet} from "react-native";
-import {Image} from "expo-image";
-import {Border, Color, FontFamily, FontSize} from "../GlobalStyles";
-function WeatherContainer() {
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Alert, Image } from 'react-native';
+import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
+import * as Location from 'expo-location';
+
+const openWeatherKey = '22aabb7d06dd6428559098d9c7a15961';
+
+const WeatherContainer = () => {
+
+  const [forecast, setForecast] = useState(null);
+  const [refreshing, setRefreshing] = useState(null);
+
+  const loadForecast = async () => {
+    setRefreshing(true);
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission to access location was denied');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+    //const response = await fetch(`${url}&lat=${location.coords.latitude}&lon=${location.coords.longitude}`);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=${openWeatherKey}`);
+    const data = await response.json();
+    //console.log(data);
+
+    if (!response.ok) {
+      Alert.alert('Something went wrong');
+    } else {
+      setForecast(data);
+    }
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    loadForecast().catch(console.error);
+  }, []);
+
+  //console.log('forecast',!forecast?.weather?.[0] ,forecast);
+
+  if (!forecast ||!forecast?.main || !forecast?.visibility || !forecast?.wind  || !forecast?.name || !forecast?.weather?.[0]) {
     return (
-        <View style={{ flex: 1 }}>
+        <View>
+          <Text style={{color: 'white'}}>Loading...</Text>
+        </View>
+    );
+  }
+
+  const weather = forecast.weather[0];
+  const current = forecast.main;
+  const vis = forecast.visibility;
+  const wind = forecast.wind;
+  const country = forecast.name;
+  console.log('info', weather);
+
+
+  return (
+      <View style={{ flex: 1 }}>
         <View style={styles.bgParent}>
           <Image
               style={styles.bgIcon}
@@ -18,48 +70,51 @@ function WeatherContainer() {
                   source={require("../assets/sunny-windy1.png")}
               />
             </View>
-            <Text style={[styles.sunny, styles.sunnyFlexBox]}>Sunny</Text>
-            <Text style={[styles.location, styles.locationLayout]}>
-              Kottawa,Sri Lanka
-            </Text>
-          </View>
-          <View style={[styles.temperature, styles.temperatureFlexBox]}>
-            <Text style={[styles.text, styles.cTypo]}>27</Text>
-            <Text style={[styles.c, styles.cLayout]}>°C</Text>
-          </View>
-          <View style={[styles.frameParent, styles.temperatureFlexBox]}>
-            <View style={styles.locationParent}>
-              <Text style={[styles.location1, styles.cTypo]}>16 km</Text>
-              <Text style={[styles.location2, styles.locationTypo]}>
-                Visibility
+              <Text style={[styles.sunny, styles.sunnyFlexBox]}>{weather.main}</Text>
+              <Text style={[styles.location, styles.locationLayout]}>
+                {country}
               </Text>
             </View>
-            <View style={[styles.locationGroup, styles.locationSpaceBlock]}>
-              <Text style={[styles.location1, styles.cTypo]}>48%</Text>
-              <Text style={[styles.location4, styles.locationTypo]}>Humidty</Text>
+            <View style={[styles.temperature, styles.temperatureFlexBox]}>
+              <Text style={[styles.text, styles.cTypo]}>{Math.floor(current.temp - 273.15)}</Text>
+              <Text style={[styles.c, styles.cLayout]}>°C</Text>
             </View>
-            <View style={[styles.locationContainer, styles.locationSpaceBlock]}>
-              <Text style={[styles.location1, styles.cTypo]}>18 km/h</Text>
-              <Text style={[styles.location4, styles.locationTypo]}>
-                W. Force
-              </Text>
+            <View style={[styles.frameParent, styles.temperatureFlexBox]}>
+              <View style={styles.locationParent}>
+                <Text style={[styles.location1, styles.cTypo]}>{Math.floor(vis/1000)} km</Text>
+                <Text style={[styles.location2, styles.locationTypo]}>
+                  Visibility
+                </Text>
+              </View>
+              <View style={[styles.locationGroup, styles.locationSpaceBlock]}>
+                <Text style={[styles.location1, styles.cTypo]}>{current.humidity}%</Text>
+                <Text style={[styles.location4, styles.locationTypo]}>Humidity</Text>
+              </View>
+              <View style={[styles.locationContainer, styles.locationSpaceBlock]}>
+                <Text style={[styles.location1, styles.cTypo]}>{Math.floor(wind.speed * 3.6)} km/h</Text>
+                <Text style={[styles.location4, styles.locationTypo]}>
+                  W. Force
+                </Text>
+              </View>
+              <View style={[styles.frameView, styles.locationSpaceBlock]}>
+                <Text style={[styles.location1, styles.cTypo]}>{current.pressure} hPa</Text>
+                <Text style={[styles.location4, styles.locationTypo]}>
+                  Pressure
+                </Text>
+              </View>
             </View>
-            <View style={[styles.frameView, styles.locationSpaceBlock]}>
-              <Text style={[styles.location1, styles.cTypo]}>1009 hPa</Text>
-              <Text style={[styles.location4, styles.locationTypo]}>
-                Pressure
-              </Text>
-            </View>
-          </View>
-          <Image
-              style={styles.sun28x1}
-              contentFit="cover"
-              source={require("../assets/sun-28x-1.png")}
-          />
+            <Image
+                style={styles.sun28x1}
+                contentFit="cover"
+                source = {{
+                  uri: `https://openweathermap.org/img/wn/${weather.icon}@2x.png`,
+                }}
+            />
         </View>
-        </View>
-    );
-}
+      </View>
+  );
+};
+
 
 export default WeatherContainer;
 
@@ -159,7 +214,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: FontSize.heading1_size,
-    lineHeight: 62,
+    lineHeight: 60,
     textAlign: "center",
     color: Color.white,
   },
@@ -228,10 +283,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sun28x1: {
-    left: 11,
-    width: 68,
-    height: 68,
-    top: 24,
+    left: 0,
+    width: 90,
+    height: 90,
+    top: 7,
     position: "absolute",
   },
 

@@ -10,8 +10,10 @@ export const FontSize = {
   size_xl: 20,
   size_3xs: 10,
   smallTextBold_size: 14,
-  heading5_size: 24,
+  heading5_size: 22,
   heading1_size: 56,
+  heading2_size: 40,
+  heading3_size: 28,
   extraSmallText_size: 12,
   heading4_size: 34,
 };
