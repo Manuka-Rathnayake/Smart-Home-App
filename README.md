@@ -1,4 +1,4 @@
-# Smart Home Dashboard with Real-time Weather
+# Smart Home App
 
 <img src="assets/Main-Screen.png" alt="Smart Home Dashboard" width="400">
 
