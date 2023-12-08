@@ -1,6 +1,6 @@
 # Smart Home Dashboard with Real-time Weather
 
-![Smart Home Dashboard](assets/Main-Screen.png)
+<img src="assets/Main-Screen.png" alt="Smart Home Dashboard" width="400">
 
 This repository hosts a Smart Home Dashboard application built using React Native and Firebase. It provides users with the ability to manage their smart home devices along with real-time weather information.
 
