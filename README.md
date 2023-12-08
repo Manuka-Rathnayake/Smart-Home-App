@@ -1,11 +1,17 @@
-# Recommended next steps:
-Note: Make sure you have installed native code dependencies [here](https://reactnative.dev/docs/environment-setup#installing-dependencies)
+# Smart Home Dashboard with Real-time Weather
 
-### To preview and run the project on your device:
-1. Open project folder in <u>Visual Studio Code</u>
-2. Run  `npm install`  in the terminal
-3. Run  `npx expo start`  in the terminal
-4. Run on For iOS device (only on MacOS)
-    1. Press  `i`  to view on iOS simulator or follow the instructions [here](https://docs.expo.dev/workflow/run-on-device/) to run on a physical device.
-5. Run on For android device
-    1. Press  `a`  to view on Android Virtual Device or follow the instructions [here](https://docs.expo.dev/workflow/run-on-device/) to run on a physical device.
+![Smart Home Dashboard](assets/Main-Screen.png)
+
+This repository hosts a Smart Home Dashboard application built using React Native and Firebase. It provides users with the ability to manage their smart home devices along with real-time weather information.
+
+## Features
+
+- **Firebase Integration:** Utilizes Firebase for websockets and data storage, enabling real-time updates for smart home devices.
+- **Weather Component:** Integrates with a weather API to display real-time weather information.
+- **Responsive Design:** Built with React Native, ensuring a responsive layout across devices.
+
+
+
+
+
+
